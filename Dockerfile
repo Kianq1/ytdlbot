@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
 RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
-
+RUN apt-get update && apt-get install -y ffmpeg libmp3lame0 && apt-get clean
 WORKDIR /app
 
 COPY requirements.txt .
