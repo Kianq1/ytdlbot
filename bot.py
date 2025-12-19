@@ -31,13 +31,24 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ساخت دکمه‌های انتخاب کیفیت
     keyboard = [
-        [
-            InlineKeyboardButton("🎬 360p", callback_data="360"),
-            InlineKeyboardButton("🎬 720p", callback_data="720"),
-        ],
-        [
-            InlineKeyboardButton("🎧 MP3", callback_data="mp3"),
-        ],
+    [
+        InlineKeyboardButton("240p", callback_data="240"),
+        InlineKeyboardButton("480p", callback_data="480"),
+    ],
+    [
+        InlineKeyboardButton("720p", callback_data="720"),
+        InlineKeyboardButton("1080p", callback_data="1080"),
+    ],
+    [
+        InlineKeyboardButton("2K", callback_data="1440"),
+        InlineKeyboardButton("4K", callback_data="2160"),
+    ],
+    [
+        InlineKeyboardButton("8K", callback_data="4320"),
+    ],
+    [
+        InlineKeyboardButton("☕ حمایت مالی", url="https://www.coffeebede.com/kianpoo11"),
+    ],
     ]
 
     await update.message.reply_text(
@@ -59,56 +70,21 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     choice = query.data
 
-    # انتخاب کیفیت
-    if choice == "360":
-        ydl_opts = {
-            "format": "bestvideo[height<=360]+bestaudio/best",
-            "merge_output_format": "mp4",
-            "outtmpl": "video.mp4",
-        }
-        filename = "video.mp4"
-        send_type = "video"
-        await query.edit_message_text("در حال دانلود 360p ...")
+    # انتخاب کیفیت بر اساس ارتفاع تصویر
+    ydl_opts = {
+        "format": f"bestvideo[height<={choice}]+bestaudio/best",
+        "merge_output_format": "mp4",
+        "outtmpl": "/tmp/video.mp4",
+    }
+    filename = "/tmp/video.mp4"
 
-    elif choice == "720":
-        ydl_opts = {
-            "format": "bestvideo[height<=720]+bestaudio/best",
-            "merge_output_format": "mp4",
-            "outtmpl": "video.mp4",
-        }
-        filename = "video.mp4"
-        send_type = "video"
-        await query.edit_message_text("در حال دانلود 720p ...")
+    await query.edit_message_text(f"در حال دانلود {choice}p ...")
 
-    elif choice == "mp3":
-        ydl_opts = {
-            "format": "bestaudio",
-            "outtmpl": "audio.mp3",
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "192",
-                }
-            ],
-        }
-        filename = "audio.mp3"
-        send_type = "audio"
-        await query.edit_message_text("در حال دانلود MP3 ...")
-
-    else:
-        await query.edit_message_text("انتخاب نامعتبر.")
-        return
-
-    # دانلود
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-        if send_type == "video":
-            await query.message.reply_video(open(filename, "rb"))
-        else:
-            await query.message.reply_audio(open(filename, "rb"))
+        await query.message.reply_video(open(filename, "rb"))
 
     except Exception as e:
         await query.message.reply_text(f"خطا در دانلود: {e}")
