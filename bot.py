@@ -1,6 +1,6 @@
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
 
-TOKEN = "BOT_TOKEN"
+TOKEN = "7691303330:AAF6G85yQFJYq19yywyZ2UYMIJM7k6pP_bQ"
 
 async def start(update, context):
     await update.message.reply_text("بات روشنه!")
