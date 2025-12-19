@@ -1,8 +1,5 @@
 [build]
-nixpacks = true
+builder = "NIXPACKS"
 
-[deploy]
-startCommand = "python3 bot.py"
-
-[variables]
-FFMPEG_PATH = "/usr/bin/ffmpeg"
+[phases.setup]
+nixPkgs = ["ffmpeg"]
