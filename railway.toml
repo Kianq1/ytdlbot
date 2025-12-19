@@ -1,0 +1,8 @@
+[build]
+nixpacks = true
+
+[deploy]
+startCommand = "python3 bot.py"
+
+[variables]
+FFMPEG_PATH = "/usr/bin/ffmpeg"
