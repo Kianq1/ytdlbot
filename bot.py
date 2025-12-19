@@ -2,7 +2,7 @@ import os
 import yt_dlp
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-TOKEN = "7691303330:AAF6G85yQFJYq19yywyZ2UYMIJM7k6pP_bQ"
+TOKEN = "BOT_TOKEN"
 
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("سلام کیان! لینک ویدیو یوتیوب رو بفرست تا دانلودش کنم.")
